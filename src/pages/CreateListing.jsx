@@ -6,12 +6,11 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import {useSelector} from  'react-redux';
-import {useNavigate} from 'react-router-dom'
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function CreateListing() {
-  const {currentUser} = useSelector(state => state.user)
+  const { currentUser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
@@ -32,7 +31,7 @@ function CreateListing() {
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   console.log(formData);
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleImageSubmit = () => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -62,7 +61,7 @@ const navigate = useNavigate()
       setUploading(false);
     }
   };
- 
+
   const storeImage = async (file) => {
     return new Promise((resolve, reject) => {
       const storage = getStorage(app);
@@ -125,8 +124,12 @@ const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-  if(formData.imageUrls.length < 1) return setError("You must upload at least one property")
-  if(+formData.regularPrice < +formData.discountPrice) return setError("Discounted price must be lower than the regular price")
+      if (formData.imageUrls.length < 1)
+        return setError("You must upload at least one property");
+      if (+formData.regularPrice < +formData.discountPrice)
+        return setError(
+          "Discounted price must be lower than the regular price"
+        );
       setLoading(true);
       setError(false);
       const res = await fetch("/api/listing/create", {
@@ -134,15 +137,15 @@ const navigate = useNavigate()
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({...formData,userRef: currentUser._id}),
+        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
       });
       const data = await res.json();
-      console.log('handleSubmit', formData)
+      console.log("handleSubmit", formData);
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
       }
-      navigate(`/listing/${data._id}`)
+      navigate(`/listing/${data._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -283,23 +286,22 @@ const navigate = useNavigate()
                 </div>
               </div>
               {formData.offer && (
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  id="discountPrice"
-                  min="0"
-                  max="1000000"
-                  required
-                  className="p-3 border border-gray-300 rounded-lg"
-                  onChange={handleChange}
-                  value={formData.discountPrice}
-                />
-                <div className="flex flex-col items-center">
-                  <p>Discounted price</p>
-                  <span className="text-xs">($ / month)</span>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    id="discountPrice"
+                    min="0"
+                    max="1000000"
+                    required
+                    className="p-3 border border-gray-300 rounded-lg"
+                    onChange={handleChange}
+                    value={formData.discountPrice}
+                  />
+                  <div className="flex flex-col items-center">
+                    <p>Discounted price</p>
+                    <span className="text-xs">($ / month)</span>
+                  </div>
                 </div>
-              </div>
-
               )}
             </div>
           </div>
@@ -351,7 +353,10 @@ const navigate = useNavigate()
                 </button>
               </div>
             ))}
-          <button disabled={loading || uploading} className="p-3 bg-gray-600 disabled:opacity-80 hover:opacity-75 text-white rounded-lg uppercase">
+          <button
+            disabled={loading || uploading}
+            className="p-3 bg-gray-600 disabled:opacity-80 hover:opacity-75 text-white rounded-lg uppercase"
+          >
             {loading ? "Creating..." : "Create Listing"}
           </button>
           {error && <p className="text-red-600">{error}</p>}
