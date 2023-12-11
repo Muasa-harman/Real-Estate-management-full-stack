@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -12,8 +12,8 @@ function Home() {
   const [rentListings, setRentListings] = useState([]);
   SwiperCore.use([Navigation]);
 
-  console.log(salesListings);
-  console.log('offer', offerListings)
+  // console.log(salesListings);
+  // console.log('offer', offerListings)
 
   useEffect(() => {
     const fetchOfferListings = async () => {
@@ -89,7 +89,7 @@ function Home() {
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10">
         {offerListings && offerListings.length > 0 && (
           <div className="">
-            <div className="">
+            <div className="my-3">
             <h2 className="text-2xl font-semibold text-gray-600">Recent offers</h2>
             <Link className="text-sm text-blue-800 hover:underline" to={'/search?offer=true'}>Show more offers</Link>
             </div>
@@ -103,7 +103,7 @@ function Home() {
 
 {rentListings && rentListings.length > 0 && (
           <div className="">
-            <div className="">
+            <div className="my-3">
             <h2 className="text-2xl font-semibold text-gray-600">Recent Places for Rent</h2>
             <Link className="text-sm text-blue-800 hover:underline" to={'/search?type=rent'}>Show more places for rent</Link>
             </div>
@@ -117,7 +117,7 @@ function Home() {
 
 {salesListings && salesListings.length > 0 && (
           <div className="">
-            <div className="">
+            <div className="my-3">
             <h2 className="text-2xl font-semibold text-gray-600">Recent places for Sales</h2>
             <Link className="text-sm text-blue-800 hover:underline" to={'/search?type=sale'}>Show more places for sale</Link>
             </div>
